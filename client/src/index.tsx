@@ -1,9 +1,16 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './styles.css';
+import  Routes  from './Routes';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const App = () => <h1>React app</h1>;
+const queryClient = new QueryClient();
 
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+      <Routes/>
+  </QueryClientProvider>
+);
 const rootElement = document.getElementById('root');
 
 if (rootElement) {
