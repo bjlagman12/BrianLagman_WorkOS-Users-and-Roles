@@ -1,7 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useNavigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { Tabs, Tab, Container } from "react-bootstrap";
-import { ManageUsers as UsersPage }  from "./Users/ManageUsers";
-import { ManageRoles as RolesPage }  from "./Roles/ManageRoles";
+import { ManageUsers as UsersPage } from "./Users/ManageUsers";
+import { ManageRoles as RolesPage } from "./Roles/ManageRoles";
 
 const Layout = () => {
   const navigate = useNavigate();
@@ -12,19 +20,17 @@ const Layout = () => {
     if (key) {
       navigate(key);
     }
-      
   };
 
   return (
     <Container className="mt-4">
-      <h1>Dashboard</h1>
       <Tabs
         activeKey={location.pathname}
-        defaultActiveKey={'users'} 
+        defaultActiveKey={"users"}
         onSelect={handleSelect}
         className="mb-3"
       >
-        <Tab eventKey='users' title="Users" />
+        <Tab eventKey="users" title="Users" />
         <Tab eventKey="roles" title="Roles" />
       </Tabs>
       <Outlet />
@@ -39,7 +45,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="/users" />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="roles" element={<RolesPage />} />
+          <Route path="roles" element={<RolesPage />} />¯
         </Route>
       </Routes>
     </Router>

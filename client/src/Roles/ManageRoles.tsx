@@ -1,12 +1,19 @@
-import { useEffect, useState } from "react";
-import { useQuery } from '@tanstack/react-query';
-
+import { useQuery } from "@tanstack/react-query";
+import { getRoles } from "../api";
+import { RoleTable } from "./RoleTable";
 
 export const ManageRoles = () => {
-  return (
-    <div>
-      <h1>Manage Roles</h1>
-      <p>This is the Manage Roles page.</p>
-    </div>
-  );
-}
+  const {
+    data: roleListData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["roles"],
+    queryFn: getRoles,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error fetching data</p>;
+
+  return <RoleTable roles={roleListData.data} />;
+};
