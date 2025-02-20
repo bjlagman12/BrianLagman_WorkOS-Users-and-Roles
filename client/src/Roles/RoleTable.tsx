@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Table, Container, Dropdown, ButtonGroup } from "react-bootstrap";
 import { Role } from "../../../server/src/models/role";
-import { getRoleNameById, formatDate } from "../utils";
+import { formatDate } from "../utils";
 import { UpdateRoleModal } from "./UpdateRoleModal";
 
 type RoleTableProps = {
@@ -33,13 +33,13 @@ export const RoleTable = ({ roles }: RoleTableProps) => {
 
   return (
     <Container className="mt-4">
-      <Table bordered hover>
+      <Table hover aria-labelledby="role-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Default Role</th>
-            <th>Description</th>
-            <th>Updated</th>
+            <th id="name-header">Name</th>
+            <th id="default-role-header">Default Role</th>
+            <th id="description-header">Description</th>
+            <th id="updated-header">Updated</th>
           </tr>
         </thead>
         <tbody>
@@ -56,11 +56,16 @@ export const RoleTable = ({ roles }: RoleTableProps) => {
                     bsPrefix="e-caret-hide"
                     id="dropdown-basic"
                     className="border-0"
+                    aria-label="More actions for role"
                   >
-                    <i className="bi bi-three-dots"></i>
+                    <i className="bi bi-three-dots" aria-hidden="true"></i>
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="#" onClick={() => handleShow(role.id)}>
+                  <Dropdown.Menu aria-labelledby="dropdown-basic">
+                    <Dropdown.Item
+                      href="#"
+                      onClick={() => handleShow(role.id)}
+                      aria-label={`Edit role ${role.name}`}
+                    >
                       Edit
                     </Dropdown.Item>
                   </Dropdown.Menu>

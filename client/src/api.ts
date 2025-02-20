@@ -14,8 +14,10 @@ const apiClient = axios.create({
 // -----------
 
 // Fetch a list of all users
-export const getUsers = async () => {
-  const response = await apiClient.get("/users");
+export const getUsers = async (searchQuery = "", page = 1) => {
+  const response = await apiClient.get(
+    `/users?search=${searchQuery}&page=${page}`
+  );
   return response.data;
 };
 

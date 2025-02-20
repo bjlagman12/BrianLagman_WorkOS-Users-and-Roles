@@ -1,64 +1,20 @@
-# Frontend Take-Home Assignment
+# Frontend Take-Home Assignment Overview
 
-Welcome to the WorkOS Frontend Take-Home Assignment!
+Below is my take-home assignment. I’ve used the following frameworks throughout the project:
 
-In this exercise, you'll implement the UI for a simple two-tab layout that lists users and roles. You will also add limited functionality to update users and roles.
+**react**: A UI library for efficient component-based development, using a virtual DOM for improved performance.
 
-You should have recieved an invitation to view a Figma design file for the take-home assignment. If you haven't received and invitation email, please reach out to us.
+**react-boostrap**: Provides pre-styled, accessible components that integrate with React, reducing the need for custom CSS.
 
-To get you started, we've also provided a fully functional backend API. Keep in mind, you won’t need to implement all of the functionality implied by the design or backend API. Make sure to focus on the specific tasks outlined below.
+**react-router-dom**: Enables dynamic routing in a React application, allowing navigation between views or pages without a page reload.
 
-Feel free to use any frontend framework and libraries you prefer — there’s no need to build everything from scratch. At WorkOS, we use [Radix Themes](https://www.radix-ui.com/), and it's perfectly fine if you want to leverage similar libraries. Just be ready to explain your decisions, including why you chose certain libraries and how they benefit the project.
+**tanstack/react-query**: Simplifies data fetching, caching, and synchronization, improving API handling and performance.
 
-If you have any questions, feel free to reach out — we're happy to clarify anything.
+**webpack**: Bundles JavaScript, CSS, and assets efficiently, optimizing performance and enabling modular development.
 
-## Time Consideration
+**eslint**: Enforces code consistency and best practices, helping catch errors early and maintain clean, readable code.
 
-We value your time! If this assignment takes you more than 8 hours, please submit whatever you have at that point.
-
-Focus on quality. You should be proud of your submission. While the code doesn't need to be 100% production-ready, it should be polished enough for a demo.
-
-Be sure to include a README that outlines what you'd improve or do differently if you had more time.
-
-## Getting Started
-
-1. **Fork the Repo**: Start by forking this repository so that you have your own version to work with.
-2. **Start the Backend API**:
-   - Ensure you have the latest version of Node.js.
-   - Run the following commands to install dependencies and start the API:
-     ```bash
-     cd server
-     npm install
-     npm run api
-     ```
-3. **Project Setup**: Add your project under the `client` directory.
-
-## Design Reference
-
-Be sure to consult the Figma design file that you were invited to view. You'll need to sign-in to Figma to access the design, so you may need to create a Figma account.
-
-The design is a starting point — you'll need to fill in some details (e.g., loading states, error states, hover states). The "Roles" tab is not designed, so you'll infer the design based on what is provided for the "Users" tab.
-
-For those portions of the exercise in which the design is given, your implementation should match the design as closely as possible. Attention to detail is important. It is certainly acceptable to deviate from the design if you are confident it is an improvement, but please explain your thinking in your README.
-
-## Backend API
-
-The API provides full CRUD support for users and roles, but you won’t need to use every endpoint.
-
-**Do not alter the backend API**.
-
-The API includes intentional latency and random server errors to simulate real-world scenarios. Ensure your front-end handles these gracefully.
-
-You can adjust the API speed using the `SERVER_SPEED` environment variable:
-
-- **slow**: Simulate slower network (`SERVER_SPEED=slow npm run api`)
-- **instant**: Remove latency (`SERVER_SPEED=instant npm run api`)
-
-You can run backend tests by executing `npm run test` in the `server` directory. The test code is located at `server/src/api.test.ts`.
-
-## Tasks Overview
-
-Work on the following tasks in this order. If you can’t complete all tasks, focus on quality rather than quantity.
+## Completed work
 
 1. Setup the "Users" and "Roles" tab structure
 2. Add the users table
@@ -66,27 +22,55 @@ Work on the following tasks in this order. If you can’t complete all tasks, fo
 4. Add support for deleting a user via the "more" icon button dropdown menu
 5. Add support for viewing all roles in the "Roles" tab
 6. Add support for renaming a role in the "Roles" tab
-7. [Bonus] Add pagination to the user table
+7. Add pagination to the user table
 
-## Evaluation Criteria
+## Future improvements
 
-We’ll evaluate based on the following:
+If I had more time, I would have completed the following improvements:
 
-- **User Experience (UX)**: Clean and intuitive interface.
-- **Component Composition**: Modular and reusable components.
-- **State Management & Caching**: Efficient handling of data.
-- **Error & Loading States**: Graceful handling of API delays and errors.
-- **CSS Animations**: Best practices followed for smooth UI interactions.
-- **Code Quality**: Clean, well-structured, and maintainable code.
-- **Accessibility**: Keyboard navigation and accessibility considerations.
+- **CRUD API**: Utilize all CRUD APIs provided by the `/users` and `/roles` endpoints, including adding, updating, and deleting users and roles.
+- **Testing**: Implement testing using tools like React Testing Library, Jest, or Cypress.
+- **CSS Improvements**: Improve the CSS to better match the Figma designs.
+- **More Comments**: Add more explanatory comments in the codebase where necessary.
+- **Pagination Cleanup**: Refactor pagination into a reusable component, instead of keeping it in `ManageUser.tsx`.
 
-## Submission Guidelines
+## Getting Started
 
-**Please do not submit a pull request to the WorkOS repo.**
+1. **Clone the Repository:**: Clone the repo from github.
 
-In your forked repository, include a README that explains:
+```
+git clone <repo>
+cd <repo>
+```
 
-- How to run your project.
-- What you would improve or do differently if you had more time.
+2. **Install All Dependencies**: Install dependencies for both the server and client.
 
-Once you're ready, share the URL to your GitHub repository with us. Make sure your code runs locally based on the instructions in your README.
+```
+npm run install:all
+```
+
+3. **Start the Application**: Start both the server and client concurrently. A separate window should open in `localhost:3000`. You should be ready to test.
+
+- Note: The default `SERVER_SPEED` is set to `"fast"`.
+
+```
+npm run start:all
+```
+
+4. **Adjust API Speed (Optional)**: You can adjust the API speed using the `SERVER_SPEED` environment variable. To run the client and server independently:
+
+- To simulate a slower network:
+
+```
+SERVER_SPEED=slow npm run start:server
+// open a new terminal tab
+npm run start:client
+```
+
+- To remove latency and get instant responses:
+
+```
+SERVER_SPEED=instant npm run start:server
+// open a new terminal tab
+npm run start:client
+```

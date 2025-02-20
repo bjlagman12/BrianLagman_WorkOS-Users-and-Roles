@@ -252,7 +252,6 @@ api.get('/roles/:id', (req, res) => {
 api.patch('/roles/:id', (req, res) => {
   const role = getEntity<Role>(req, data.roles)
   if (!role) {
-    res.status(404).json({ message: 'Role not found' })
     return
   }
 

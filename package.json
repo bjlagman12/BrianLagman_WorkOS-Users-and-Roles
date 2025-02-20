@@ -1,0 +1,14 @@
+{
+  "name": "frontend-take-home",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install &&npm install --prefix server && npm install --prefix client",
+    "start:all": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "npm run api --prefix server",
+    "start:client": "npm start --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1"
+  }
+}

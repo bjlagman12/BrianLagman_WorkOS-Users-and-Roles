@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updateRole } from "../api";
 import Form from "react-bootstrap/Form";
+import { ToastContext } from "../Layout";
+import { AxiosError } from "axios";
 
 type UpdateRoleModalProps = {
   roleId: string;
@@ -18,7 +20,22 @@ export const UpdateRoleModal = ({
   showModal,
   onClose,
 }: UpdateRoleModalProps) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    searchInputRef.current?.focus();
+  }, []);
+
   const queryClient = useQueryClient();
+  const toastContext = useContext(ToastContext);
+
+  if (!toastContext) {
+    throw new Error(
+      "DeleteUserModal must be used within a ToastContext Provider"
+    );
+  }
+  const { setToast } = toastContext;
+
   const mutateUpdateRole = useMutation({
     mutationFn: ({
       id,
@@ -27,26 +44,42 @@ export const UpdateRoleModal = ({
       id: string;
       updatedData: { name: string; description: string; isDefault: boolean };
     }) => updateRole(id, updatedData), // Call updateRole correctly
-    onSuccess: () => {
-      // Refetch users or update the cache by removing the deleted user
-      queryClient.invalidateQueries({ queryKey: ["roles"] }); // Refetch users
+    onSuccess: async () => {
+      // Refetch roles after updated current role
+      await queryClient.invalidateQueries({ queryKey: ["roles"] });
+      setToast({
+        show: true,
+        message: "Role updated successfully",
+        type: "success",
+      });
     },
-    onError: (error) => {
-      // Optionally, you can show an error message or perform other actions
-      console.error("Error deleting user:", error);
+    onError: (error: AxiosError) => {
+      if (error.response) {
+        if (
+          error.response &&
+          error.response.data &&
+          typeof (error.response.data as any).message === "string"
+        ) {
+          console.error(
+            "Error deleting user:",
+            (error.response.data as any).message
+          );
+          // Want to show menaing full error messages here provided by server
+          setToast({
+            show: true,
+            message:
+              (error.response.data as any).message || "Failed to update role",
+            type: "danger",
+          });
+        }
+      }
     },
     onSettled: () => {
-      // Optionally, you can show a success message or perform other actions
-      onClose(); // Close the modal after deletion
+      onClose();
     },
   });
 
-  const {
-    mutate: handleUpdate,
-    isError,
-    isSuccess,
-    isPending,
-  } = mutateUpdateRole;
+  const { mutate: handleUpdate, isPending } = mutateUpdateRole;
 
   const handleUpdateRole = (
     roleId: string,
@@ -59,22 +92,16 @@ export const UpdateRoleModal = ({
   const [newRoleName, setRoleName] = useState("");
 
   const handleSubmit = (event: any) => {
-    event.preventDefault(); // Prevents the default form submission
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.stopPropagation(); // Stops the event from propagating up the DOM tree
-    } else {
-      if (!newRoleName.trim()) {
-        console.error("Role name cannot be empty");
-        return;
-      }
-      handleUpdateRole(roleId, {
-        name: newRoleName,
-        description: "",
-        isDefault,
-      });
+    event.preventDefault();
+    if (!newRoleName.trim()) {
+      setValidated(true);
+      return;
     }
-    setValidated(true);
+    handleUpdateRole(roleId, {
+      name: newRoleName,
+      description: "",
+      isDefault,
+    });
   };
 
   return (
@@ -85,11 +112,18 @@ export const UpdateRoleModal = ({
       <Form noValidate onSubmit={handleSubmit} className="mb-4">
         <Modal.Body>
           <Form.Group controlId="search">
+            <Form.Label>Role Name</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Search by name..."
+              ref={searchInputRef}
+              placeholder="Enter new role name..."
               onChange={(e) => setRoleName(e.target.value)}
+              required
+              isInvalid={validated}
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a role name.
+            </Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
